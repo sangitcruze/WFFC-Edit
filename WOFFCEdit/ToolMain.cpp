@@ -18,7 +18,11 @@ ToolMain::ToolMain()
 	m_toolInputCommands.back		= false;
 	m_toolInputCommands.left		= false;
 	m_toolInputCommands.right		= false;
+	//m_toolInputCommands.mouseX      = false;
+	//m_toolInputCommands.mouseY      = false;
+	m_toolInputCommands.mouse_LB_Down  = false;
 	
+	/*m_mousePos = LPPOINT();*/
 }
 
 
@@ -282,6 +286,14 @@ void ToolMain::Tick(MSG *msg)
 	//do we have a selection
 	//do we have a mode
 	//are we clicking / dragging /releasing
+
+	//if (m_toolInputCommands.mouse_LB_Down)
+	//{
+	//	m_selectedObject = m_d3dRenderer.MousePicking();
+	//	m_toolInputCommands.mouse_LB_Down = false;
+	//}
+
+
 	//has something changed
 		//update Scenegraph
 		//add to scenegraph
@@ -304,12 +316,19 @@ void ToolMain::UpdateInput(MSG * msg)
 	case WM_KEYUP:
 		m_keyArray[msg->wParam] = false;
 		break;
-
-	case WM_MOUSEMOVE:
+	case WM_RBUTTONDOWN:
+		m_toolInputCommands.RMB = true;
 		break;
-
-	case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
+	case WM_RBUTTONUP:
+		m_toolInputCommands.RMB = false;
+		break;
+	case WM_MOUSEMOVE:
+		m_toolInputCommands.mouseX = GET_X_LPARAM(msg->lParam);
+		m_toolInputCommands.mouseY = GET_Y_LPARAM(msg->lParam);
+		break;
+case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when its up too
 		//set some flag for the mouse button in inputcommands
+		m_toolInputCommands.mouse_LB_Down = true;
 		break;
 
 	}
@@ -348,6 +367,12 @@ void ToolMain::UpdateInput(MSG * msg)
 		m_toolInputCommands.rotLeft = true;
 	}
 	else m_toolInputCommands.rotLeft = false;
+
+	if (m_toolInputCommands.mouse_LB_Down)
+	{
+		m_selectedObject = m_d3dRenderer.MousePicking();
+		m_toolInputCommands.mouse_LB_Down = false;
+	}
 
 	//WASD
 }

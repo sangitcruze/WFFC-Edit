@@ -14,7 +14,7 @@ DisplayObject::DisplayObject()
 	m_scale.y = 0.0f;
 	m_scale.z = 0.0f;
 	m_render = true;
-	m_wireframe = false;
+	m_wireframe = true;
 
 	m_light_type =0;
 	m_light_diffuse_r = 0.0f;	m_light_diffuse_g = 0.0f;	m_light_diffuse_b = 0.0f;

@@ -13,7 +13,7 @@
 #include "InputCommands.h"
 #include <vector>
 
-
+class CameraController;
 // A basic game implementation that creates a D3D11 device and
 // provides a game loop.
 class Game : public DX::IDeviceNotify
@@ -50,6 +50,7 @@ public:
 	void BuildDisplayChunk(ChunkObject *SceneChunk);
 	void SaveDisplayChunk(ChunkObject *SceneChunk);	//saves geometry et al
 	void ClearDisplayList();
+	int MousePicking();
 
 #ifdef DXTK_AUDIO
 	void NewAudioDevice();
@@ -71,15 +72,10 @@ private:
 
 	//functionality
 	float								m_movespeed;
+	RECT		                        m_ScreenDimensions; //storing the dimensions of the active window client area
 
 	//camera
-	DirectX::SimpleMath::Vector3		m_camPosition;
-	DirectX::SimpleMath::Vector3		m_camOrientation;
-	DirectX::SimpleMath::Vector3		m_camLookAt;
-	DirectX::SimpleMath::Vector3		m_camLookDirection;
-	DirectX::SimpleMath::Vector3		m_camRight;
-	float m_camRotRate;
-
+	std::unique_ptr<CameraController> m_camera;
 	//control variables
 	bool m_grid;							//grid rendering on / off
 	// Device resources.
@@ -123,7 +119,6 @@ private:
 #endif
 
     DirectX::SimpleMath::Matrix                                             m_world;
-    DirectX::SimpleMath::Matrix                                             m_view;
     DirectX::SimpleMath::Matrix                                             m_projection;
 
 
