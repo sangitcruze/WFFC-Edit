@@ -3,13 +3,16 @@
 #include <vector>
 #include <sstream>
 
+#include "TextureManager.h"
+#include <iostream>
+
 //
 //ToolMain Class
 ToolMain::ToolMain()
 {
 
 	m_currentChunk = 0;		//default value
-	m_selectedObject = 0;	//initial selection ID
+	/*m_selectedObject = 0;*/	//initial selection ID
 	m_sceneGraph.clear();	//clear the vector for the scenegraph
 	m_databaseConnection = NULL;
 
@@ -21,6 +24,7 @@ ToolMain::ToolMain()
 	//m_toolInputCommands.mouseX      = false;
 	//m_toolInputCommands.mouseY      = false;
 	m_toolInputCommands.mouse_LB_Down  = false;
+
 	
 	/*m_mousePos = LPPOINT();*/
 }
@@ -305,7 +309,7 @@ void ToolMain::Tick(MSG *msg)
 
 void ToolMain::UpdateInput(MSG * msg)
 {
-
+	m_textureManager = m_d3dRenderer.m_textureManager;
 	switch (msg->message)
 	{
 		//Global inputs,  mouse position and keys etc
@@ -337,6 +341,8 @@ case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when 
 	if (m_keyArray['W'])
 	{
 		m_toolInputCommands.forward = true;
+		
+		
 	}
 	else m_toolInputCommands.forward = false;
 	
@@ -368,10 +374,40 @@ case WM_LBUTTONDOWN:	//mouse button down,  you will probably need to check when 
 	}
 	else m_toolInputCommands.rotLeft = false;
 
-	if (m_toolInputCommands.mouse_LB_Down)
+	if (m_keyArray['X'])
 	{
+		m_toolInputCommands.objectMoveForward = true;
+		m_textureManager.get()->MoveSelectedObjects(m_toolInputCommands);
+		
+	}
+	else m_toolInputCommands.objectMoveForward = false;
+	
+	if (m_keyArray['Z'])
+	{
+		m_toolInputCommands.objectMoveBackward = true;
+		m_textureManager.get()->MoveSelectedObjects(m_toolInputCommands);
+	}
+	else  m_toolInputCommands.objectMoveBackward = false;
+
+	if (m_toolInputCommands.mouse_LB_Down )
+	{
+		
 		m_selectedObject = m_d3dRenderer.MousePicking();
+
+		// Retrieve selected objects
+		auto& selectedObjects = m_textureManager->GetSelectedObjects();
+
+		// Check if selectedObjects is not empty
+		if (!selectedObjects.empty()) {
+			// Get the last selected object
+			m_selectedObject = selectedObjects.back();
+		}
 		m_toolInputCommands.mouse_LB_Down = false;
+		m_textureManager.get()->ApplyTextureToObject();
+	}
+	if (m_keyArray[16])
+	{
+		m_toolInputCommands.shiftDown = true;
 	}
 
 	//WASD

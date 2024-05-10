@@ -11,6 +11,7 @@
 #include "DisplayChunk.h"
 #include "ChunkObject.h"
 #include "InputCommands.h"
+#include "TextureManager.h"
 #include <vector>
 
 class CameraController;
@@ -99,6 +100,8 @@ private:
     std::unique_ptr<DirectX::SpriteBatch>                                   m_sprites;
     std::unique_ptr<DirectX::SpriteFont>                                    m_font;
 
+	
+
 #ifdef DXTK_AUDIO
     std::unique_ptr<DirectX::AudioEngine>                                   m_audEngine;
     std::unique_ptr<DirectX::WaveBank>                                      m_waveBank;
@@ -121,7 +124,8 @@ private:
     DirectX::SimpleMath::Matrix                                             m_world;
     DirectX::SimpleMath::Matrix                                             m_projection;
 
-
+public:
+    std::shared_ptr<TextureManager>                                         m_textureManager; // Declare TextureManager member variable
 };
 
 std::wstring StringToWCHART(std::string s);

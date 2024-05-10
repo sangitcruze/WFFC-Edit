@@ -62,6 +62,9 @@
     <ClCompile Include="CameraController.cpp">
       <Filter>Renderer</Filter>
     </ClCompile>
+    <ClCompile Include="TextureManager.cpp">
+      <Filter>Tool</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DeviceResources.h">
@@ -113,6 +116,9 @@
     </ClInclude>
     <ClInclude Include="CameraController.h">
       <Filter>Renderer</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureManager.h">
+      <Filter>Tool</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

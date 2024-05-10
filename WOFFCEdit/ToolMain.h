@@ -6,6 +6,7 @@
 #include "sqlite3.h"
 #include "SceneObject.h"
 #include "InputCommands.h"
+#include "TextureManager.h"
 #include <vector>
 
 
@@ -27,13 +28,13 @@ public: //methods
 	void	UpdateInput(MSG *msg);
 
 public:	//variables
-	std::vector<SceneObject>    m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
+	std::vector<SceneObject>            m_sceneGraph;	//our scenegraph storing all the objects in the current chunk
 	ChunkObject					m_chunk;		//our landscape chunk
 	int m_selectedObject;						//ID of current Selection
 
 private:	//methods
 	void	onContentAdded();
-
+	std::shared_ptr<TextureManager>   m_textureManager; // Declare TextureManager member variable
 
 		
 private:	//variables
