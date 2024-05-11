@@ -10,6 +10,7 @@ struct InputCommands
 	bool rotRight;
 	bool rotLeft;
 	bool objectMoveForward;
+	bool deselectObjects;
 
 	float mouseX;
 	float mouseY;
