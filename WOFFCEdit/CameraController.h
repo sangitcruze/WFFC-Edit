@@ -26,7 +26,7 @@ public:
     // Update the camera in Focus camera mode
     void FocusOnObject(const InputCommands& input_commands, std::vector<int> selectedObjects, std::vector<DisplayObject>* m_displayList);
 
-    
+    void CameraController::SpinCamera(const InputCommands& input_commands,float deltaTime = 1);
   
     // Getter method to retrieve the view matrix & camera position
     Matrix GetViewMatix() const { return m_viewMatrix; }

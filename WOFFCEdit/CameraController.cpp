@@ -154,3 +154,28 @@ void CameraController::FocusOnObject(const InputCommands& input_commands, std::v
 	}
 
 }
+
+void CameraController::SpinCamera(const InputCommands& input_commands, float deltaTime)
+{
+	// Check if the button to activate camera spinning is held
+	if (input_commands.spinCamera)
+	{
+		// Set the rotation speed (degrees per second)
+		float spinSpeed = 1.0f;
+
+		// Calculate the angular rotation for this frame based on the spin speed and delta time
+		float spinAngle = spinSpeed * deltaTime;
+
+		// Update the orientation to spin around the vertical axis
+		m_orientation.y += spinAngle;
+
+		// Update the view matrix without recalculating position and look-at
+		m_viewMatrix = Matrix::CreateRotationY(m_orientation.y * XM_PI / 180) * Matrix::CreateTranslation(m_position);
+	}
+	else
+	{
+		// If the button to activate focus camera mode is not held, switch back to normal camera mode
+		HandleMouse(input_commands);
+
+	}
+}
