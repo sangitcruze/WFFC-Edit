@@ -36,6 +36,8 @@ public:
 
     void TextureManager::DeleteObject();
 
+    void SpawnObject();
+
     std::vector<int> selectedObjects;
     const std::vector<int>& GetSelectedObjects() const { return selectedObjects; }
    

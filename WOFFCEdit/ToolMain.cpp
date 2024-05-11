@@ -386,7 +386,7 @@ void ToolMain::UpdateInput(MSG* msg)
 	{
 		m_toolInputCommands.objectMoveBackward = true;
 		m_textureManager.get()->MoveSelectedObjects(m_toolInputCommands);
-		m_textureManager.get()->DeleteObject();
+		
 	}
 	else  m_toolInputCommands.objectMoveBackward = false;
 
@@ -396,6 +396,10 @@ void ToolMain::UpdateInput(MSG* msg)
 		m_textureManager.get()->DeleteObject();
 	}
 	
+	if (m_keyArray['F'])
+	{
+		m_textureManager.get()->SpawnObject();
+	}
 
 	if (m_toolInputCommands.mouse_LB_Down && !m_toolInputCommands.shiftDown)
 	{

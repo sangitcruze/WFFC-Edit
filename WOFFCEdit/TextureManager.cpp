@@ -11,6 +11,7 @@
 #include "TextureManager.h"
 
 
+
 TextureManager::TextureManager()
 {
 
@@ -153,4 +154,28 @@ void TextureManager::DeleteObject() {
 	}
 	// Clear the list of selected objects since they have been deleted
 	selectedObjects.clear();
+}
+
+void TextureManager::SpawnObject() {
+
+	 DisplayObject newObject;
+	
+	// Create a new object with parameters
+
+    newObject.m_model = (*m_displayList)[0].m_model;
+	newObject.m_texture_diffuse = (*m_displayList)[0].m_texture_diffuse;
+
+    newObject.m_position = DirectX::SimpleMath::Vector3::Vector3(2, 1, 2);
+	newObject.m_scale = DirectX::SimpleMath::Vector3::Vector3(1, 1, 1);
+	newObject.m_orientation = DirectX::SimpleMath::Vector3::Vector3(0, 0, 0);
+    // Add the new object to the end of the display list
+	m_displayList->push_back(newObject);
+
+	// Assign a unique ID to the newly spawned object
+	int newID = (m_displayList->size()) / 2;
+	(*m_displayList)[newID].m_ID = newID;
+
+
+
+	
 }
