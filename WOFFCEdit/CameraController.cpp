@@ -1,5 +1,6 @@
 #include "CameraController.h"
 #include "InputCommands.h"
+#include "TextureManager.h"
 using namespace DirectX;
 
 CameraController::CameraController(float moveSpeed, float rotationRate) : m_moveSpeed(moveSpeed), m_rotationRate(rotationRate) // Constructor
@@ -27,6 +28,8 @@ void CameraController::Update(const InputCommands& input_commands)
 {
 	// Handle mouse input
 	HandleMouse(input_commands);
+
+
 
 	// Handle rotation input
 	if (input_commands.rotRight)
@@ -108,4 +111,46 @@ void CameraController::HandleMouse(const InputCommands& input_commands)
 
 	// Update old mouse position
 	m_oldMouse = m_newMouse;
+}
+
+
+void CameraController::FocusOnObject(const InputCommands& input_commands, std::vector<int>selectedObjects, std::vector<DisplayObject>* m_displayList)
+{
+	// Check if the button to activate focus camera mode is held
+	if (input_commands.switchCameraMode)
+	{
+
+		// Check if there's a selected object to focus on
+		if (!selectedObjects.empty())
+		{
+			// Get the position of the selected object
+			Vector3 centerOfRotation = (*m_displayList)[selectedObjects[0]].m_position;
+
+			// Calculate the difference in mouse position
+			Vector2 mouseDifference = m_newMouse - m_oldMouse;
+			mouseDifference.Normalize();
+
+			// Adjust the orientation based on mouse movement
+			m_orientation.y -= mouseDifference.x * m_rotationRate;
+			m_orientation.x -= mouseDifference.y * m_rotationRate;
+
+			// Calculate the new camera position based on the orientation and distance from the center of rotation
+			float distance = 1;
+			m_position.x = centerOfRotation.x + distance * sin(m_orientation.x * XM_PI / 180) * cos(m_orientation.y * XM_PI / 180);
+			m_position.y = centerOfRotation.y + distance * sin(m_orientation.y * XM_PI / 180);
+			m_position.z = centerOfRotation.z + distance * cos(m_orientation.x * XM_PI / 180) * cos(m_orientation.y * XM_PI / 180);
+
+			// Update the look at position
+			m_lookAt = centerOfRotation;
+
+			// Update the view matrix
+			m_viewMatrix = Matrix::CreateLookAt(m_position, m_lookAt, Vector3::UnitY);
+		}
+		else
+		{
+			// If the button to activate focus camera mode is not held, switch back to normal camera mode
+			HandleMouse(input_commands);
+		}
+	}
+
 }

@@ -12,6 +12,8 @@
 
 
 
+
+
 TextureManager::TextureManager()
 {
 
@@ -47,10 +49,7 @@ bool TextureManager::LoadTexture(const std::wstring& filePath, const std::string
 bool TextureManager::ApplyTextureToObject(const std::string& textureName, int objectIndex) {
 	// Check if the texture exists in the manager's map
 	auto it = m_textures.find(textureName);
-	//if (it == m_textures.end()) {
-	//	// Texture not found
-	//	return false;
-	//}
+
 
 
 	// Apply texture to each selected object
@@ -83,9 +82,12 @@ bool TextureManager::ApplyTextureToObject(const std::string& textureName, int ob
 
 
 		}
+		RecordState(); // Record state after applying textures
 	}
 	return true;
 }
+
+
 
 
 
@@ -112,9 +114,11 @@ bool TextureManager::RemoveTexture(int objectID)
 			}
 
 
-			return false;
+		
 		}
-	}
+		RecordState(); // Record state after removing texture
+	}	
+	return false;
 }
 
 
@@ -132,9 +136,10 @@ void TextureManager::MoveSelectedObjects(const InputCommands& input_commands) {
 			if (input_commands.objectMoveBackward) {
 				(*m_displayList)[i].m_position.x -= 0.1f;
 			}
-			// Add more movement controls as needed
+			
 		}
 	}
+	RecordState(); // Record state after moving objects
 }
 
 void TextureManager::DeleteObject() {
@@ -154,28 +159,79 @@ void TextureManager::DeleteObject() {
 	}
 	// Clear the list of selected objects since they have been deleted
 	selectedObjects.clear();
+	// Record state after deleting objects
+	RecordState();
 }
 
 void TextureManager::SpawnObject() {
 
-	 DisplayObject newObject;
-	
+	DisplayObject newObject;
+
 	// Create a new object with parameters
 
-    newObject.m_model = (*m_displayList)[0].m_model;
+	newObject.m_model = (*m_displayList)[0].m_model;
 	newObject.m_texture_diffuse = (*m_displayList)[0].m_texture_diffuse;
 
-    newObject.m_position = DirectX::SimpleMath::Vector3::Vector3(2, 1, 2);
+	newObject.m_position = DirectX::SimpleMath::Vector3::Vector3(2, 1, 2);
 	newObject.m_scale = DirectX::SimpleMath::Vector3::Vector3(1, 1, 1);
 	newObject.m_orientation = DirectX::SimpleMath::Vector3::Vector3(0, 0, 0);
-    // Add the new object to the end of the display list
+	// Add the new object to the end of the display list
 	m_displayList->push_back(newObject);
 
 	// Assign a unique ID to the newly spawned object
 	int newID = (m_displayList->size()) / 2;
 	(*m_displayList)[newID].m_ID = newID;
+	// Record the current state for undo
+	RecordState();
 
+}
 
+void TextureManager::ScaleObject(int objectIndex, bool isVisible) {
+	for (size_t i = 0; i < m_displayList->size(); i++) {
+		// Check if the object index is valid
+		if (std::find(selectedObjects.begin(), selectedObjects.end(), i) != selectedObjects.end()) {
+			// scale object
+			(*m_displayList)[i].m_scale = DirectX::SimpleMath::Vector3::Vector3(10, 10, 10);
 
+		}
+	}
 	
 }
+
+
+
+// Function to record the current state for undo
+void TextureManager::RecordState() {
+	// Push the current state to the undo stack
+	m_undoStack.push(*m_displayList);
+	// Clear the redo stack since a new operation has been performed
+	while (!m_redoStack.empty()) {
+		m_redoStack.pop();
+	}
+}
+// Function to undo the last operation
+void TextureManager::Undo() {
+	// Check if there is a previous state in the undo stack
+	if (!m_undoStack.empty()) {
+		// Push the current state to the redo stack
+		m_redoStack.push(*m_displayList);
+		// Restore the previous state by assigning it to the displayList
+		*m_displayList = m_undoStack.top();
+		// Remove the previous state from the undo stack
+		m_undoStack.pop();
+	}
+}
+// Function to redo the last undone operation
+void TextureManager::Redo() {
+	// Check if there is a state in the redo stack to redo
+	if (!m_redoStack.empty()) {
+		// Push the current state to the undo stack
+		m_undoStack.push(*m_displayList);
+		// Restore the state from the redo stack by assigning it to the displayList
+		*m_displayList = m_redoStack.top();
+		// Remove the state from the redo stack
+		m_redoStack.pop();
+	}
+}
+
+

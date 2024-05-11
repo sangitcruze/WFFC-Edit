@@ -25,6 +25,7 @@ struct InputCommands
 
 	//key
 	bool shiftDown;
+	float switchCameraMode;
 
 
 

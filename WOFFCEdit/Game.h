@@ -53,6 +53,9 @@ public:
 	void ClearDisplayList();
 	int MousePicking();
 
+	//camera
+	std::unique_ptr<CameraController> m_camera;
+
 #ifdef DXTK_AUDIO
 	void NewAudioDevice();
 #endif
@@ -75,8 +78,7 @@ private:
 	float								m_movespeed;
 	RECT		                        m_ScreenDimensions; //storing the dimensions of the active window client area
 
-	//camera
-	std::unique_ptr<CameraController> m_camera;
+	
 	//control variables
 	bool m_grid;							//grid rendering on / off
 	// Device resources.

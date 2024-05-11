@@ -7,6 +7,8 @@
 #include "SceneObject.h"
 #include "InputCommands.h"
 #include "TextureManager.h"
+#include "CameraController.h"
+
 #include <vector>
 
 
@@ -35,7 +37,8 @@ public:	//variables
 private:	//methods
 	void	onContentAdded();
 	std::shared_ptr<TextureManager>   m_textureManager; // Declare TextureManager member variable
-
+	CameraMode m_cameraMode; // Track the current camera mode
+	std::shared_ptr<CameraController>   m_cameraController; // Instance of the CameraController class
 		
 private:	//variables
 	HWND	m_toolHandle;		//Handle to the  window

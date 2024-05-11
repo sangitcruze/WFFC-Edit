@@ -2,7 +2,7 @@
 #include "resource.h"
 #include <vector>
 #include <sstream>
-
+#include "CameraController.h" 
 #include "TextureManager.h"
 #include <iostream>
 
@@ -400,6 +400,29 @@ void ToolMain::UpdateInput(MSG* msg)
 	{
 		m_textureManager.get()->SpawnObject();
 	}
+	if (m_keyArray['R'])
+	{
+		m_textureManager.get()->Redo();
+	}
+	if (m_keyArray['U'])
+	{
+		m_textureManager.get()->Undo();
+	}
+
+	if (m_keyArray['C'])
+	{
+		// Switch between FreeCamera and FocusCamera modes
+		m_d3dRenderer.m_camera.get()->FocusOnObject(m_toolInputCommands, m_textureManager.get()->selectedObjects, m_textureManager.get()->m_displayList);
+		m_d3dRenderer.m_camera.get()->m_cameraMode =CameraMode::FocusCamera;
+		m_toolInputCommands.switchCameraMode = true;
+	}
+	else m_toolInputCommands.switchCameraMode = false; m_d3dRenderer.m_camera.get()->m_cameraMode = CameraMode::FreeCamera;
+
+	if (m_keyArray['V'])
+	{
+		m_textureManager.get()->ScaleObject();
+	}
+	
 
 	if (m_toolInputCommands.mouse_LB_Down && !m_toolInputCommands.shiftDown)
 	{
