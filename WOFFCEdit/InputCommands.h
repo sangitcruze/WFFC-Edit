@@ -27,6 +27,8 @@ struct InputCommands
 	bool shiftDown;
 	float switchCameraMode;
 	float spinCamera;
+	float spinClockwise;
+	float spinCounterClockwise;
 
 
 

@@ -422,14 +422,28 @@ void ToolMain::UpdateInput(MSG* msg)
 	{
 		m_textureManager.get()->ScaleObject();
 	}
+
 	if (m_keyArray['N'])
 	{
 		// If the 'N' key is pressed, continuously update the camera's orientation
 		m_d3dRenderer.m_camera.get()->SpinCamera(m_toolInputCommands);
-		m_toolInputCommands.spinCamera = true; // Set flag to indicate camera spinning
+		m_toolInputCommands.spinClockwise = true; // Set flag to indicate camera spinning
+		
 	}
 	// If the 'N' key is not pressed, stop updating the camera's orientation
-	else m_toolInputCommands.spinCamera = false;
+	else m_toolInputCommands.spinClockwise = false;
+
+	if (m_keyArray['M'])
+	{
+		
+		m_d3dRenderer.m_camera.get()->SpinCamera(m_toolInputCommands);
+		m_toolInputCommands.spinCounterClockwise = true; // Set flag to indicate camera spinning
+
+	}
+	// If the 'N' key is not pressed, stop updating the camera's orientation
+	else m_toolInputCommands.spinCounterClockwise = false;
+
+
 
 	if (m_toolInputCommands.mouse_LB_Down && !m_toolInputCommands.shiftDown)
 	{
