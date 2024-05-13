@@ -20,7 +20,7 @@ public:
 
  
 
-   /* void Initialise(std::vector<DisplayObject>* startingObjects,const std::shared_ptr<DX::DeviceResources>& device_resources);*/
+  
 
 
     // Load texture from file

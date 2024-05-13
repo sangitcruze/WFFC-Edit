@@ -425,12 +425,12 @@ void ToolMain::UpdateInput(MSG* msg)
 
 	if (m_keyArray['N'])
 	{
-		// If the 'N' key is pressed, continuously update the camera's orientation
+		// If key is pressed, update the camera's orientation
 		m_d3dRenderer.m_camera.get()->SpinCamera(m_toolInputCommands);
 		m_toolInputCommands.spinClockwise = true; // Set flag to indicate camera spinning
 		
 	}
-	// If the 'N' key is not pressed, stop updating the camera's orientation
+	// If is not pressed, stop updating the camera's orientation
 	else m_toolInputCommands.spinClockwise = false;
 
 	if (m_keyArray['M'])
@@ -440,7 +440,7 @@ void ToolMain::UpdateInput(MSG* msg)
 		m_toolInputCommands.spinCounterClockwise = true; // Set flag to indicate camera spinning
 
 	}
-	// If the 'N' key is not pressed, stop updating the camera's orientation
+	
 	else m_toolInputCommands.spinCounterClockwise = false;
 
 

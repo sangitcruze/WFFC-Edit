@@ -15,10 +15,10 @@ enum class CameraMode {
 class CameraController
 {
 public:
-    // Constructor with default parameters for move speed and camera rotation rate
+    // Constructor 
     CameraController(float moveSpeed = 0.2f, float rotationRate = 2.3f);
     
-    // Method to update the camera based on input commands
+    
     void Update(const InputCommands& inputCommands);
 
     
@@ -34,10 +34,10 @@ public:
     // Camera mode
     CameraMode m_cameraMode;
 private:
-    // Initialization helper methods
+    
     void Init();
 
-    // Update helper methods
+ 
     void CreateUpdate(float deltaTime);
 
     // Handle mouse input for camera rotation

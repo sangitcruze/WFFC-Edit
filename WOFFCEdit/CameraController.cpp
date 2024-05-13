@@ -116,7 +116,7 @@ void CameraController::HandleMouse(const InputCommands& input_commands)
 
 void CameraController::FocusOnObject(const InputCommands& input_commands, std::vector<int>selectedObjects, std::vector<DisplayObject>* m_displayList)
 {
-	// Check if the button to activate focus camera mode is held
+	// Button check 
 	if (input_commands.switchCameraMode)
 	{
 
@@ -134,7 +134,7 @@ void CameraController::FocusOnObject(const InputCommands& input_commands, std::v
 			m_orientation.y -= mouseDifference.x * m_rotationRate;
 			m_orientation.x -= mouseDifference.y * m_rotationRate;
 
-			// Calculate the new camera position based on the orientation and distance from the center of rotation
+			// Calculate the new camera position 
 			float distance = 1;
 			m_position.x = centerOfRotation.x + distance * sin(m_orientation.x * XM_PI / 180) * cos(m_orientation.y * XM_PI / 180);
 			m_position.y = centerOfRotation.y + distance * sin(m_orientation.y * XM_PI / 180);
@@ -148,7 +148,7 @@ void CameraController::FocusOnObject(const InputCommands& input_commands, std::v
 		}
 		else
 		{
-			// If the button to activate focus camera mode is not held, switch back to normal camera mode
+
 			HandleMouse(input_commands);
 		}
 	}
@@ -160,18 +160,18 @@ void CameraController::SpinCamera(const InputCommands& input_commands, float del
 
 	// spin speed and direction
 	float spinSpeed = 1.0f; //degrees per second
-	float spinDirection = 1.0f; 
-    // Calculate the angular rotation for this frame based on the spin speed and delta time
-    float spinAngle = spinSpeed * deltaTime;
+	float spinDirection = 1.0f;
+	// Calculate the angle rotation 
+	float spinAngle = spinSpeed * deltaTime;
 
-	// Check if the button to activate camera spinning is held
+	// Button check
 	if (input_commands.spinClockwise)
 	{
 
 		// Update the orientation to spin around the vertical axis
 		m_orientation.y -= spinAngle * spinDirection;
 
-		// Update the view matrix without recalculating position and look-at
+		// Update the view matrix 
 		m_viewMatrix = Matrix::CreateRotationY(m_orientation.y * XM_PI / 180) * Matrix::CreateTranslation(m_position);
 	}
 	if (input_commands.spinCounterClockwise)
@@ -180,14 +180,14 @@ void CameraController::SpinCamera(const InputCommands& input_commands, float del
 		// Update the orientation to spin around the vertical axis
 		m_orientation.y += spinAngle * spinDirection;
 
-		// Update the view matrix without recalculating position and look-at
+		// Update the view matrix 
 		m_viewMatrix = Matrix::CreateRotationY(m_orientation.y * XM_PI / 180) * Matrix::CreateTranslation(m_position);
 
 	}
 
 	else
 	{
-		// If the button to activate focus camera mode is not held, switch back to normal camera mode
+
 		HandleMouse(input_commands);
 
 	}

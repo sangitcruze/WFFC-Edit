@@ -61,7 +61,7 @@ bool TextureManager::ApplyTextureToObject(const std::string& textureName, int ob
 				nullptr, &(*m_displayList)[i].m_texture_diffuse);
 			// Update the object's effect with the new texture
 			(*m_displayList)[i].m_model->UpdateEffects([&](DirectX::IEffect* effect) {
-				// Set the texture for the basic effect (assumed to be used)
+				// Set the texture 
 				const auto basic_effect = dynamic_cast<DirectX::BasicEffect*>(effect);
 				if (basic_effect) {
 					basic_effect->SetTexture((*m_displayList)[i].m_texture_diffuse);
@@ -73,7 +73,7 @@ bool TextureManager::ApplyTextureToObject(const std::string& textureName, int ob
 				nullptr, &(*m_displayList)[i].m_texture_diffuse);
 			// Update the object's effect with the new texture
 			(*m_displayList)[i].m_model->UpdateEffects([&](DirectX::IEffect* effect) {
-				// Set the texture for the basic effect (assumed to be used)
+				// Set the texture  
 				const auto basic_effect = dynamic_cast<DirectX::BasicEffect*>(effect);
 				if (basic_effect) {
 					basic_effect->SetTexture((*m_displayList)[i].m_texture_diffuse);
@@ -105,7 +105,7 @@ bool TextureManager::RemoveTexture(int objectID)
 					nullptr, &(*m_displayList)[i].m_texture_diffuse);
 				// Update the object's effect with the new texture
 				(*m_displayList)[i].m_model->UpdateEffects([&](DirectX::IEffect* effect) {
-					// Set the texture for the basic effect (assumed to be used)
+					// Set the texture 
 					const auto basic_effect = dynamic_cast<DirectX::BasicEffect*>(effect);
 					if (basic_effect) {
 						basic_effect->SetTexture((*m_displayList)[i].m_texture_diffuse);
@@ -143,13 +143,13 @@ void TextureManager::MoveSelectedObjects(const InputCommands& input_commands) {
 }
 
 void TextureManager::DeleteObject() {
-	// Iterate through the selected objects to delete
+	// look through the selected objects to delete
 	for (auto it = selectedObjects.rbegin(); it != selectedObjects.rend(); ++it) {
 		int objectId = *it;
 		// Find the object with the specified ID
 		auto obj = std::remove_if(m_displayList->begin(), m_displayList->end(),
 			[objectId](const DisplayObject& obj) { return obj.m_ID == objectId; });
-		// Erase the marked objects from the display list
+		// delete objects from the display list
 		m_displayList->erase(obj, m_displayList->end());
 	}
 
@@ -157,7 +157,7 @@ void TextureManager::DeleteObject() {
 	for (size_t i = 0; i < m_displayList->size(); ++i) {
 		(*m_displayList)[i].m_ID = static_cast<int>(i);
 	}
-	// Clear the list of selected objects since they have been deleted
+	// Clear the list of selected objects 
 	selectedObjects.clear();
 	// Record state after deleting objects
 	RecordState();
@@ -204,7 +204,7 @@ void TextureManager::ScaleObject(int objectIndex, bool isVisible) {
 void TextureManager::RecordState() {
 	// Push the current state to the undo stack
 	m_undoStack.push(*m_displayList);
-	// Clear the redo stack since a new operation has been performed
+	// Clear the redo stack 
 	while (!m_redoStack.empty()) {
 		m_redoStack.pop();
 	}
@@ -215,7 +215,7 @@ void TextureManager::Undo() {
 	if (!m_undoStack.empty()) {
 		// Push the current state to the redo stack
 		m_redoStack.push(*m_displayList);
-		// Restore the previous state by assigning it to the displayList
+		// Restore the previous state 
 		*m_displayList = m_undoStack.top();
 		// Remove the previous state from the undo stack
 		m_undoStack.pop();
@@ -227,7 +227,7 @@ void TextureManager::Redo() {
 	if (!m_redoStack.empty()) {
 		// Push the current state to the undo stack
 		m_undoStack.push(*m_displayList);
-		// Restore the state from the redo stack by assigning it to the displayList
+		// Restore the state from the redo stack
 		*m_displayList = m_redoStack.top();
 		// Remove the state from the redo stack
 		m_redoStack.pop();
